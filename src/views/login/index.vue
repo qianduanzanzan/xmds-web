@@ -49,7 +49,7 @@ export default defineComponent({
           setUserInfo(data);
           store.commit("user/SET_USER_INFO",data)
           console.log(store)
-        //   this.$router.push({ path: "/" });
+          this.$router.push({ path: "/" });
         })
         .catch((error: any) => {
           console.log(error);
