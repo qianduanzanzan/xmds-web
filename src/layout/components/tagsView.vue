@@ -13,7 +13,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
     .tagsView{
-        color: red;
-        height: 28px;
+        background: #ccc;
+        height: 48px;
     }
 </style>

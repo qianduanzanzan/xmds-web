@@ -1,11 +1,11 @@
 <template>
   <a-layout class="layout">
-    <a-layout-sider class="h100"><left-menu></left-menu></a-layout-sider>
+    <a-layout-sider class="left-menu"><left-menu ref="menu"></left-menu></a-layout-sider>
     <a-layout>
-      <a-layout-header>
+      <a-layout-header class="header-navbar">
         <navbar></navbar>
       </a-layout-header>
-      <a-layout-header>
+      <a-layout-header class="header-tags">
         <tags-view></tags-view>
       </a-layout-header>
       <a-layout-content>
@@ -29,6 +29,11 @@ export default defineComponent({
     tagsView,
     mainView,
   },
+//   methods:{
+//       changeMenu(){
+//           (this.$refs.menu as any).changeMenu();
+//       }
+//   }
 });
 </script>
 
@@ -37,13 +42,18 @@ export default defineComponent({
     width: 100%;
     height: 100%;
 }
-.h100{
+.left-menu{
     height: 100%;
+    width: auto !important;
 }
 
 ::v-deep .ant-layout-header{
-    height: 48px;
     padding: 0;
-    background-color: #fff;
+    &.header-navbar{
+        height: 60px;
+    }
+    &.header-tags{
+        height: 48px;
+    }
 }
 </style>
