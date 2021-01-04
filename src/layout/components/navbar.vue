@@ -19,13 +19,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons-vue";
+// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons-vue";
 import store from "@/store/index";
 export default defineComponent({
   name: "navbar",
   components: {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
+    // MenuFoldOutlined,
+    // MenuUnfoldOutlined,
   },
   data() {
     return {

@@ -25,11 +25,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { login,checkLogin } from "@/api/login";
-import { setToken, setUserInfo,removeToken } from "@/utils/auth";
-import {onMounted, getCurrentInstance } from "vue";
+import { login, checkLogin } from "@/api/login";
+import { setToken, setUserInfo, removeToken } from "@/utils/auth";
+import { onMounted, getCurrentInstance } from "vue";
 import { message } from "ant-design-vue";
-import store from '@/store/index'
+import store from "@/store/index";
 
 export default defineComponent({
   name: "Login",
@@ -42,28 +42,31 @@ export default defineComponent({
       isRemenber: false,
     };
   },
-  setup(){
+  setup() {
     const token = localStorage.getItem("token");
-    const userInfo:any = JSON.parse(localStorage.getItem("userInfo") as string);
-    const {ctx} = getCurrentInstance() as any
-    if(token && userInfo){
-      checkLogin(token).then((res:any) => {
-        if(userInfo.account == res.data.account && userInfo.userName == res.data.userName){
-          store.commit("user/SET_USER_INFO",res.data)
-          // console.log(ctx)
-          ctx.$router.push({ path: "/" });
-          // console.log(ctx)
-          // const a:any = getCurrentInstance();
-          // console.log(a)
-          // ctx.$router.push({ path: "/" });
-        }else{
+    const userInfo: any = JSON.parse(
+      localStorage.getItem("userInfo") as string
+    );
+    const { ctx } = getCurrentInstance() as any;
+    if (token && userInfo) {
+      checkLogin(token)
+        .then((res: any) => {
+          if (
+            userInfo.account == res.data.account &&
+            userInfo.userName == res.data.userName
+          ) {
+            store.commit("user/SET_USER_INFO", res.data);
+            ctx.$router.push({ path: "/" });
+          } else {
+            removeToken();
+          }
+        })
+        .catch((e: any) => {
           removeToken();
-        }
-      }).catch((e:any)=>{
-        console.log(e)
-        message.error('未知错误');
-      })
-    }else{
+          // console.log(e);
+          // message.error("未知错误");
+        });
+    } else {
       removeToken();
     }
   },
@@ -74,8 +77,8 @@ export default defineComponent({
           setToken(res.data.token);
           const data: any = res.data;
           setUserInfo(data);
-          store.commit("user/SET_USER_INFO",data)
-          console.log(store)
+          store.commit("user/SET_USER_INFO", data);
+          console.log(store);
           this.$router.push({ path: "/" });
         })
         .catch((error: any) => {
@@ -83,7 +86,7 @@ export default defineComponent({
         });
     },
     reset() {
-      console.log(1)
+      console.log(1);
     },
   },
 });

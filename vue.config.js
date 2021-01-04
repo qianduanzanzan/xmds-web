@@ -3,7 +3,7 @@ const path = require("path"); //引入path模块
 module.exports = {
   devServer: {
     port: 8081, // 端口
-    open: true,
+    open: false,
     overlay: {
       warnings: false,
       errors: true,
