@@ -50,10 +50,12 @@ export default defineComponent({
 ::v-deep .ant-layout-header{
     padding: 0;
     &.header-navbar{
-        height: 60px;
+        height: 65px;
     }
     &.header-tags{
-        height: 48px;
+        height: 40px;
+        background: transparent;
+        margin-bottom: 8px;
     }
 }
 </style>

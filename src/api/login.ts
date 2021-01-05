@@ -10,10 +10,11 @@ export const login = (data: any) =>
     },
   });
 
-  export const logout = () =>
+  export const logout = (data: any) =>
   request({
     url: "/service/logout",
     method: "post",
+    data,
     headers: {
       "Content-Type": "application/json",
     },

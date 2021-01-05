@@ -8,7 +8,7 @@
     class="leftMenu"
   >
     <div class="menu-header"><HomeOutlined />小明社区</div>
-    <a-menu-item v-for="item in menu" :key="item.id" @click="goto(item.route)">{{item.name}}</a-menu-item>
+    <a-menu-item :class="actived && item.id == actived.id?'selected':''" class="aaa" v-for="item in menu" :key="item.id" @click="goto(item)">{{item.name}}</a-menu-item>
   </a-menu>
 </template>
 
@@ -47,29 +47,37 @@ export default defineComponent({
           route: item.routeName
         }
       })
+    },
+    actived(){
+      return (store.state as any).tags.actived
     }
   },
   methods: {
     // changeMenu() {
     //   this.collapsed = !this.collapsed;
     // },
-    goto(route:string){
-      this.$router.push({path: `/${route}`})
+    goto(item:any){
+      store.commit('tags/ADD_TAG',item)
+      this.$router.push({path: `/${item.route}`})
     }
   },
 });
 </script>
 
 <style lang="scss" scoped>
-// .leftMenu {
-//   height: calc(100% - 60px);
-// }
 .menu-header {
   height: 56px;
   width: 100%;
   line-height: 60px;
   color: #fff;
   font-size: 24px;
-  //   background-color: red;
+}
+.ant-menu-item-selected{
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+.selected{
+  color: #fff !important;
+  background-color: #1890ff !important;
 }
 </style>

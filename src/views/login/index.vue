@@ -42,34 +42,6 @@ export default defineComponent({
       isRemenber: false,
     };
   },
-  setup() {
-    const token = localStorage.getItem("token");
-    const userInfo: any = JSON.parse(
-      localStorage.getItem("userInfo") as string
-    );
-    const { ctx } = getCurrentInstance() as any;
-    if (token && userInfo) {
-      checkLogin(token)
-        .then((res: any) => {
-          if (
-            userInfo.account == res.data.account &&
-            userInfo.userName == res.data.userName
-          ) {
-            store.commit("user/SET_USER_INFO", res.data);
-            ctx.$router.push({ path: "/" });
-          } else {
-            removeToken();
-          }
-        })
-        .catch((e: any) => {
-          removeToken();
-          // console.log(e);
-          // message.error("未知错误");
-        });
-    } else {
-      removeToken();
-    }
-  },
   methods: {
     login() {
       login(this.loginForm)
@@ -78,8 +50,11 @@ export default defineComponent({
           const data: any = res.data;
           setUserInfo(data);
           store.commit("user/SET_USER_INFO", data);
-          console.log(store);
-          this.$router.push({ path: "/" });
+          if(this.$route.query && (this.$route.query as any).redirect){
+            this.$router.push((this.$route.query as any).redirect);
+          }else{
+            this.$router.push("/");
+          }
         })
         .catch((error: any) => {
           console.log(error);

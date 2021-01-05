@@ -1,15 +1,5 @@
 import {getRouter} from "@/api/menu"
 
-// export const filterAsyncRoutes = (routes: any[]) => {
-//     return routes.map((route) => {
-//       if(route.pid == 0){
-//           if(route.status == 0){
-//               route.children = []
-//           }
-//       }
-//     })
-//   }
-
 const state: any = {
     routers:[]
   };
@@ -17,7 +7,10 @@ const state: any = {
   const mutations = {
     SET_ROUTERS:(state:any,data:any) => {
         state.routers = data
-    }
+    },
+    REMOVE_ROUTERS:(state:any) => {
+      state.routers = []
+  }
   };
   
   const actions = {

@@ -1,7 +1,9 @@
 import axios from "axios";
 import { message as Message, Modal } from "ant-design-vue";
-// import {getToken} from './auth'
 import store from "@/store/index";
+import router from "../router/index";
+import { removeToken } from "@/utils/auth";
+import { checkLogin } from "@/api/login";
 
 // create an axios instance
 const service = axios.create({
@@ -11,10 +13,16 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // config = Object.assign({}, config);
+    
+    // if((store.state as any).user.token == ""){
+    //   store.commit("user/SET_USER_INFO",JSON.parse(localStorage.getItem("userInfo") as string))
+    // }
     const token: string | null = (store.state as any).user.token;
     if (token) {
+      // const res = await checkLogin({token:token})
+      // store.commit("user/SET_USER_INFO", res.data);
       config.headers["token"] = token;
       // config.data['jzlsh'] = pnParam
     }
@@ -74,24 +82,28 @@ service.interceptors.response.use(
 
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
-      Message.error(res.msg);
-
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (res.code === "52000" || res.code === "52001" || res.code === "52002") {
+        removeToken()
         // to re-login
         Modal.confirm({
           title: "提示",
           content: "登录信息过期，请重新登录",
           type: "warning",
           onOk() {
-            console.log("确认");
+            router.push('/login')
           },
           onCancel() {
-            console.log(1);
+            router.push('/login')
           },
         });
+      }else{
+        Message.error(res.msg);
       }
-      return Promise.reject(new Error(res.message || "Error"));
+      return new Promise((reject:any) => {
+        reject(new Error(res.message || "Error"))
+      })
+      // return Promise.reject(new Error(res.message || "Error"));
     } else {
       return res;
     }
