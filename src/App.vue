@@ -8,15 +8,15 @@ import store from "@/store/index";
 import { checkLogin } from "@/api/login";
 
 export default defineComponent({
-  async setup(){
-    if((store.state as any).user.token == ""){
-      const token = localStorage.getItem('token')
-      const res = await checkLogin({token:token})
-      if(res.data){
-        store.commit("user/SET_USER_INFO", res.data);
-      }
-    }
-  }
+  // async setup(){
+  //   if((store.state as any).user.token == ""){
+  //     const token = localStorage.getItem('token')
+  //     const res = await checkLogin({token:token})
+  //     if(res.data){
+  //       store.commit("user/SET_USER_INFO", res.data);
+  //     }
+  //   }
+  // }
 })
 </script>
 

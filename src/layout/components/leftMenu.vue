@@ -1,7 +1,5 @@
 <template>
   <a-menu
-    v-model:openKeys="openKeys"
-    v-model:selectedKeys="selectedKeys"
     mode="inline"
     theme="dark"
     :inlineCollapsed="collapsed"

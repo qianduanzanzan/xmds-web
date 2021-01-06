@@ -16,16 +16,21 @@
             <a-menu-item>
               <div @click.stop="logout">退出登录</div>
             </a-menu-item>
+            <a-menu-item>
+              <div @click.stop="openUserInfo">个人信息</div>
+            </a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
     </a-row>
   </a-row>
+  <user-info-drawer ref="userInfoDrawer" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { removeToken } from "@/utils/auth";
+import userInfoDrawer from './userInfoDrawer.vue'
 // import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons-vue";
 import store from "@/store/index";
 import router from "../../router/index";
@@ -33,6 +38,7 @@ import { logout } from "@/api/login";
 export default defineComponent({
   name: "navbar",
   components: {
+    userInfoDrawer
     // MenuFoldOutlined,
     // MenuUnfoldOutlined,
   },
@@ -55,6 +61,9 @@ export default defineComponent({
         router.push("/login");
       });
     },
+    openUserInfo(){
+      (this.$refs.userInfoDrawer as any).openDrawer()
+    }
   },
 });
 </script>

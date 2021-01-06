@@ -5,6 +5,7 @@ import store from "./store";
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import "@/router/navigationGuards";
+import './components'
 
 createApp(App)
   .use(store)

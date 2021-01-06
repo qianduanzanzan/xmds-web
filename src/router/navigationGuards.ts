@@ -5,6 +5,10 @@ import { removeToken } from "@/utils/auth";
 
 router.beforeEach(async (to: any, _: any, next: any) => {
   const token = localStorage.getItem("token");
+  if(!(store.state as any).user.token && token){
+    const res = await checkLogin({ token: token });
+    store.commit("user/SET_USER_INFO", res.data);
+  }
   if (token && to.path != "/login") {
     if (
       !(store.state as any).permission.routers ||

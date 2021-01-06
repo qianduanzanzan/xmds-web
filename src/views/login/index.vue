@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { login, checkLogin } from "@/api/login";
+import { login } from "@/api/login";
 import { setToken, setUserInfo, removeToken } from "@/utils/auth";
 import { onMounted, getCurrentInstance } from "vue";
 import { message } from "ant-design-vue";
