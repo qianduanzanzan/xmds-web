@@ -1,7 +1,7 @@
 <template>
   <div class="inline-block">
     <a-avatar :src="imgUrl" :size="200" />
-    <div>
+    <a-row justify="center">
       <a-upload
         v-model:fileList="fileList"
         list-type="text"
@@ -10,19 +10,19 @@
         :action="`/service/${url}`"
         :before-upload="beforeUpload"
         @change="handleChange"
-        :headers="{token:token}"
+        :headers="{ token: token }"
         name="filename"
       >
         <a-button class="mt10">更换</a-button>
       </a-upload>
-    </div>
+    </a-row>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { message } from "ant-design-vue";
-import store from '@/store/index'
+import store from "@/store/index";
 export default defineComponent({
   name: "imgUpload",
   props: {
@@ -41,10 +41,10 @@ export default defineComponent({
       fileList: [],
     };
   },
-  computed:{
-      token(){
-          return (store.state as any).user.token
-      }
+  computed: {
+    token() {
+      return (store.state as any).user.token;
+    },
   },
   methods: {
     handleChange(info: any) {
@@ -53,8 +53,8 @@ export default defineComponent({
         return;
       }
       if (info.file.status === "done") {
-          console.log(info.file.response.data)
-          this.$emit("update:imgUrl", info.file.response.data);
+        console.log(info.file.response.data);
+        this.$emit("update:imgUrl", info.file.response.data);
       }
       if (info.file.status === "error") {
         this.loading = false;
@@ -89,7 +89,7 @@ export default defineComponent({
 .inline-block {
   display: inline-block;
 }
-.mt10{
-    margin-top: 10px;
+.mt10 {
+  margin-top: 10px;
 }
 </style>

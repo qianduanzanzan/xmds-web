@@ -3,7 +3,7 @@ import { message as Message, Modal } from "ant-design-vue";
 import store from "@/store/index";
 import router from "../router/index";
 import { removeToken } from "@/utils/auth";
-import { checkLogin } from "@/api/login";
+// import { checkLogin } from "@/api/login";
 
 // create an axios instance
 const service = axios.create({
@@ -17,8 +17,8 @@ service.interceptors.request.use(
     let token: string | null = (store.state as any).user.token;
     if (!token) {
       token = localStorage.getItem("token");
-        config.headers["token"] = token;
-    }else{
+      config.headers["token"] = token;
+    } else {
       config.headers["token"] = token;
     }
     const contentType = config.headers["Content-Type"];
@@ -50,16 +50,18 @@ service.interceptors.request.use(
     }
     //json提交
     if (config.headers["Content-Type"] == "application/json") {
-      for (const it in config.data) {
-        const y = config.data[it];
-        if (
-          y === "null" ||
-          y === null ||
-          y === "" ||
-          typeof y === "undefined" ||
-          (y instanceof Object && Object.keys(y).length == 0)
-        ) {
-          delete config.data[it];
+      if (typeof config.data == "object") {
+        for (const it in config.data) {
+          const y = config.data[it];
+          if (
+            y === "null" ||
+            y === null ||
+            y === "" ||
+            typeof y === "undefined" ||
+            (y instanceof Object && Object.keys(y).length == 0)
+          ) {
+            delete config.data[it];
+          }
         }
       }
     }
@@ -78,11 +80,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (
-        res.code === "52000" ||
-        res.code === "52001" ||
-        res.code === "52002"
-      ) {
+      if (res.code == "52000" || res.code == "52001" || res.code == "52002") {
         removeToken();
         // to re-login
         Modal.confirm({
@@ -96,7 +94,7 @@ service.interceptors.response.use(
             router.push("/login");
           },
         });
-      } else {
+      } else if (res.code != "50007") {
         Message.error(res.msg);
       }
       return new Promise((reject: any) => {

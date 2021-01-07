@@ -5,9 +5,12 @@ import { removeToken } from "@/utils/auth";
 
 router.beforeEach(async (to: any, _: any, next: any) => {
   const token = localStorage.getItem("token");
+  let res:any = null
   if(!(store.state as any).user.token && token){
-    const res = await checkLogin({ token: token });
-    store.commit("user/SET_USER_INFO", res.data);
+    res = await checkLogin({ token: token });
+    if(res.data){
+      store.commit("user/SET_USER_INFO", res.data);
+    }
   }
   if (token && to.path != "/login") {
     if (
@@ -43,11 +46,11 @@ router.beforeEach(async (to: any, _: any, next: any) => {
       rootRouter.children = routers;
       router.addRoute(rootRouter);
       next({ ...to, replace: true });
+    }else{
+      next();
     }
-    next();
   } else if (to.path == "/login") {
     if (token) {
-      const res = await checkLogin({ token: token });
       const userInfo: any = JSON.parse(
         localStorage.getItem("userInfo") as string
       );

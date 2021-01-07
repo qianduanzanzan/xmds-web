@@ -9,7 +9,14 @@
     :after-visible-change="afterVisibleChange"
     :destroyOnClose="true"
   >
-    <img-manage v-model:imgUrl="imageUrl" url="pic/upload" />
+    <a-row justify="center" align="middle">
+      <a-col>
+        <img-manage v-model:imgUrl="imageUrl" url="pic/upload" />
+      </a-col>
+      <div><user-info class="aaaa" ref="aaa">asdasdasd</user-info></div>
+    </a-row>
+    
+    asdasdasdas
   </a-drawer>
 </template>
 
@@ -25,11 +32,31 @@ export default defineComponent({
   },
   methods: {
     afterVisibleChange(v: boolean) {
-      console.log(v);
+      if(v){
+        console.log(v)
+      }
     },
     openDrawer() {
       this.visible = true;
     },
+    aacca(){
+      // (this.$refs.aaa as any).aaa()
+      // console.log((this.$refs as any))
+      console.log(document.getElementsByClassName('aaaa'))
+    }
   },
 });
 </script>
+
+<style lang="scss" scoped>
+  .aa{
+    position: relative;
+    z-index: 1000;
+    display: block;
+  }
+  .aaaa{
+    width: 100px;
+    height: 100px;
+    background: red;
+  }
+</style>

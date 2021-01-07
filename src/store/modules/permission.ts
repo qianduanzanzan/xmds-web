@@ -16,8 +16,7 @@ const state: any = {
   const actions = {
       getRoute:async function({commit}:any,data:any) {
         const res = await getRouter(data)
-        commit("SET_ROUTERS",res.data)
-        console.log(res)
+        commit("SET_ROUTERS",res.data || [])
       }
   };
   

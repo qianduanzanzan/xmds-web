@@ -4,6 +4,7 @@ const state: any = {
   avatar: "",
   role: null,
   auths: null,
+  id: null,
 };
 
 const mutations = {
@@ -13,6 +14,7 @@ const mutations = {
     state.avatar = userInfo.avatar;
     state.role = userInfo.role;
     state.auths = userInfo.auths;
+    state.id = userInfo.id;
   },
 
   REMOVE_USER_INFO(state: any) {

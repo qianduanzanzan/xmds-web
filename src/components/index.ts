@@ -1,14 +1,11 @@
-import {createApp} from "vue";
-import imgManage from "./ImgManage.vue"
-import App from "../App.vue";
-
-const app = createApp(App);
-//头像上传组件
-app.component('ImgManage',imgManage);
+import imgManage from './ImgManage.vue'
+import userInfo from './UserInfo.vue'
+// import {app} from '../main'
+// app.component('imgManage', imgManage)
+// app.component('userInfo', userInfo)
 
 
-
-
-
-
-app.mount('#app')
+export default {
+    'imgManage':imgManage,
+    'userInfo':userInfo
+}
