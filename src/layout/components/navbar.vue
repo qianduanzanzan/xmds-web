@@ -9,7 +9,9 @@
         <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
           <span class="header-user-name">{{ userInfo.userName }}</span>
           <a-avatar v-if="userInfo.avatar" :src="userInfo.avatar" :size="48" />
-          <a-avatar v-else :size="48">{{ userInfo.userName[userInfo.userName.length-1] }}</a-avatar>
+          <a-avatar v-else :size="48">{{
+            userInfo.userName[userInfo.userName.length - 1]
+          }}</a-avatar>
         </a>
         <template #overlay>
           <a-menu>
@@ -24,13 +26,13 @@
       </a-dropdown>
     </a-row>
   </a-row>
-  <user-info-drawer ref="userInfoDrawer" />
+  <user-info-drawer :id="userInfo.id" ref="userInfoDrawer" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { removeToken } from "@/utils/auth";
-import userInfoDrawer from './userInfoDrawer.vue'
+import userInfoDrawer from "./userInfoDrawer.vue";
 // import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons-vue";
 import store from "@/store/index";
 import router from "../../router/index";
@@ -38,7 +40,7 @@ import { logout } from "@/api/login";
 export default defineComponent({
   name: "navbar",
   components: {
-    userInfoDrawer
+    userInfoDrawer,
     // MenuFoldOutlined,
     // MenuUnfoldOutlined,
   },
@@ -61,9 +63,9 @@ export default defineComponent({
         router.push("/login");
       });
     },
-    openUserInfo(){
-      (this.$refs.userInfoDrawer as any).openDrawer()
-    }
+    openUserInfo() {
+      (this.$refs.userInfoDrawer as any).openDrawer();
+    },
   },
 });
 </script>

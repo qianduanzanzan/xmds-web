@@ -52,7 +52,6 @@ export default defineComponent({
   },
   methods: {
     handleClose(tag: any) {
-      console.log(tag);
       store.commit("tags/REMOVE_TAG", tag.id);
     },
     goto(item: any) {

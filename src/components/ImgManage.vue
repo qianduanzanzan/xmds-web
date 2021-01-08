@@ -12,6 +12,7 @@
         @change="handleChange"
         :headers="{ token: token }"
         name="filename"
+        :token="token"
       >
         <a-button class="mt10">更换</a-button>
       </a-upload>

@@ -9,14 +9,10 @@
     :after-visible-change="afterVisibleChange"
     :destroyOnClose="true"
   >
-    <a-row justify="center" align="middle">
-      <a-col>
-        <img-manage v-model:imgUrl="imageUrl" url="pic/upload" />
-      </a-col>
-      <div><user-info class="aaaa" ref="aaa">asdasdasd</user-info></div>
+    <a-row justify="center">
+        <info v-bind="$attrs" />
     </a-row>
     
-    asdasdasdas
   </a-drawer>
 </template>
 
@@ -27,36 +23,20 @@ export default defineComponent({
   data() {
     return {
       visible: false,
-      imageUrl:'http://xmcommunity.oss-cn-beijing.aliyuncs.com/pic/77a052fe42d5_avatar.jpg',
     };
   },
   methods: {
     afterVisibleChange(v: boolean) {
-      if(v){
-        console.log(v)
+      if(!v){
+        this.$emit('closeDrawer')
       }
     },
     openDrawer() {
       this.visible = true;
     },
-    aacca(){
-      // (this.$refs.aaa as any).aaa()
-      // console.log((this.$refs as any))
-      console.log(document.getElementsByClassName('aaaa'))
-    }
   },
 });
 </script>
 
 <style lang="scss" scoped>
-  .aa{
-    position: relative;
-    z-index: 1000;
-    display: block;
-  }
-  .aaaa{
-    width: 100px;
-    height: 100px;
-    background: red;
-  }
 </style>
