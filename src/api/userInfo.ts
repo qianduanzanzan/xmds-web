@@ -37,3 +37,12 @@ export const editAvatar = (data: any) =>
       "Content-Type": "application/json",
     },
   });
+  export const addUser = (data: any) =>
+  request({
+    url: "/service/user/add",
+    method: "post",
+    data,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });

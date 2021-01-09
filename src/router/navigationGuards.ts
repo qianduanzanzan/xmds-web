@@ -17,7 +17,7 @@ router.beforeEach(async (to: any, _: any, next: any) => {
       !(store.state as any).permission.routers ||
       (store.state as any).permission.routers.length == 0
     ) {
-      await store.dispatch("permission/getRoute", { menuName: "测试" });
+      await store.dispatch("permission/getRoute", { menuName: "" });
       const routers = (store.state as any).permission.routers.map(
         (item: any) => {
           return {

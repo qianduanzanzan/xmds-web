@@ -29,11 +29,6 @@ export default defineComponent({
     tagsView,
     mainView,
   },
-//   methods:{
-//       changeMenu(){
-//           (this.$refs.menu as any).changeMenu();
-//       }
-//   }
 });
 </script>
 
@@ -55,7 +50,6 @@ export default defineComponent({
     &.header-tags{
         height: 40px;
         background: transparent;
-        margin-bottom: 8px;
     }
 }
 </style>

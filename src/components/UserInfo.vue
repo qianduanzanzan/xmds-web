@@ -1,4 +1,5 @@
 <template>
+{{stateId}}{{id}}
   <a-row style="width: 100%" justify="center">
     <img-manage
       v-model:imgUrl="userInfo.avatar"
@@ -54,6 +55,11 @@ export default defineComponent({
       required: true,
       type: Number,
     },
+  },
+  computed:{
+    stateId(){
+      return (store.state as any).user.id
+    }
   },
   setup(props) {
     const userInfo: any = ref({

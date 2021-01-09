@@ -69,14 +69,14 @@
       </template>
     </a-table-column>
   </a-table>
-  <menu-modal ref="menuModal" :menuId="selectedMenuID" :type="type" />
+  <menu-modal ref="menuModal" :menuId="selectedMenuID" @close="getList" :type="type" />
 </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref ,onMounted,nextTick} from "vue";
 import { getMenuList } from "@/api/menu";
-import menuModal from '../menu/components/menuModal.vue'
+import menuModal from './components/menuModal.vue'
 export default defineComponent({
   components:{
     menuModal

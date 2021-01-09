@@ -1,4 +1,19 @@
 <template>
+  <a-row justify="space-between" align="middle">
+    <a-col :span="6" style="margin-left: 8px">
+      <a-row align="middle"
+        >用户名：
+        <a-col :span="18">
+          <a-input
+            v-model:value="searchData.userName"
+            @keydown.enter="getList"
+          ></a-input>
+        </a-col>
+      </a-row>
+    </a-col>
+
+    <a-button @click="openModal">添加</a-button>
+  </a-row>
   <a-table
     class="table"
     :columns="columns"
@@ -30,11 +45,34 @@
       <a-button @click="del(record)">删除</a-button>
     </template>
   </a-table>
-  <user-info-drawer :id="selectedUserId" @closeDrawer="onCloseDrawer" ref="userInfoDrawer" />
+  <user-info-drawer
+    :id="selectedUserId"
+    @closeDrawer="onCloseDrawer"
+    ref="userInfoDrawer"
+  />
+  <a-modal v-model:visible="visible" title="添加用户" @ok="handleOk" :destroyOnClose="true">
+    <a-form labelAlign="left" :centered="true" :maskClosable="false" :label-col="labelCol" :wrapper-col="wrapperCol" :model="addUserform" ref="ruleForm" :rules="rules">
+      <a-form-item label="用户名" name="userName">
+        <a-input
+          v-model:value="addUserform.userName"
+          placeholder="请输入用户名"
+        />
+      </a-form-item>
+      <a-form-item label="账号" name="account">
+        <a-input v-model:value="addUserform.account" placeholder="请输入账号" />
+      </a-form-item>
+      <a-form-item label="密码" name="password">
+        <a-input
+          v-model:value="addUserform.password"
+          placeholder="请输入密码"
+        />
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { getUserList } from "@/api/userInfo";
+import { getUserList,addUser } from "@/api/userInfo";
 import userInfoDrawer from "@/layout/components/userInfoDrawer.vue";
 export default defineComponent({
   name: "userList",
@@ -42,6 +80,29 @@ export default defineComponent({
   data() {
     return {
       selectedUserId: null,
+      visible: false,
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
+      addUserform: {
+        userName: "",
+        account: "",
+        password: "",
+        roleId:102
+      },
+      rules: {
+        userName: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 2, max: 5, message: "用户名长度在2到5之间", trigger: "blur" },
+        ],
+        account: [
+          { required: true, message: "请输入账号", trigger: "blur" },
+          { min: 6, max: 11, message: "账号长度在6到11之间", trigger: "blur" },
+        ],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 11, message: "密码长度在6到11之间", trigger: "blur" },
+        ],
+      },
       columns: [
         {
           dataIndex: "userName",
@@ -87,19 +148,22 @@ export default defineComponent({
     });
     const searchData = ref({ userName: "" });
     const getList = () => {
-      getUserList(Object.assign(searchData.value, pageInfo.value)).then(
-        (res: any) => {
-          pageInfo.value.total = res.total;
-          userList.value = res.data.records;
-        }
-      );
+      const data = {
+        userName: searchData.value.userName,
+        total: 0,
+        size: 20,
+        current: 1,
+      };
+      getUserList(data).then((res: any) => {
+        pageInfo.value.total = res.total;
+        userList.value = res.data.records;
+      });
     };
     getList();
     return { userList, pageInfo, searchData, getList };
   },
   methods: {
     onCloseDrawer() {
-        console.log('关闭')
       this.pageInfo = {
         total: 0,
         size: 20,
@@ -116,6 +180,24 @@ export default defineComponent({
     },
     del(data: any) {
       console.log(data);
+    },
+    handleOk() {
+      (this.$refs.ruleForm as any)
+        .validate()
+        .then(() => {
+          addUser(this.addUserform).then((res:any) => {
+            if(res.code == 200){
+              this.visible = false;
+              this.getList()
+            }
+          })
+        })
+        .catch(() => {
+          return false;
+        });
+    },
+    openModal() {
+      this.visible = true;
     },
   },
 });
