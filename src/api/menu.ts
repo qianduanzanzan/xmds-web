@@ -49,3 +49,33 @@ export const getDeatil = (data: any) =>
       "Content-Type": "application/json",
     },
   });
+
+  export const authMenu = (data: any) =>
+  request({
+    url: "/service/tbUserMenu/add",
+    method: "post",
+    data,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  export const cancelAuth = (data: any) =>
+  request({
+    url: "/service/tbUserMenu/del",
+    method: "post",
+    data,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  export const getAuthMenu = (data: any) =>
+  request({
+    url: "/service/tbUserMenu/getMenu",
+    method: "post",
+    data,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });

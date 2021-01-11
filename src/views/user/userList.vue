@@ -48,7 +48,7 @@
     </template>
     <template #operation="{ record }">
       <a-button @click="edit(record)">修改</a-button>
-      <a-button @click="del(record)">删除</a-button>
+      <a-button @click="opMenuModal(record)">菜单</a-button>
     </template>
   </a-table>
   <user-info-drawer
@@ -89,17 +89,19 @@
       </a-form-item>
     </a-form>
   </a-modal>
+  <auth-menu-modal ref="authMenuModal" :userId="selectedUserId" />
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { getUserList, addUser } from "@/api/userInfo";
+import authMenuModal from './components/authMenuModal.vue'
 import userInfoDrawer from "@/layout/components/userInfoDrawer.vue";
 export default defineComponent({
   name: "userList",
-  components: { userInfoDrawer },
+  components: { userInfoDrawer,authMenuModal },
   data() {
     return {
-      selectedUserId: null,
+      selectedUserId: 0,
       visible: false,
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
@@ -186,6 +188,9 @@ export default defineComponent({
     getList();
     return { userList, pageInfo, searchData, getList };
   },
+  mounted(){
+    console.log(this)
+  },
   methods: {
     onCloseDrawer() {
       this.pageInfo = {
@@ -202,8 +207,11 @@ export default defineComponent({
         (this.$refs.userInfoDrawer as any).openDrawer();
       });
     },
-    del(data: any) {
-      console.log(data);
+    opMenuModal(data: any) {
+      this.selectedUserId = data.id;
+      this.$nextTick(() => {
+        (this.$refs.authMenuModal as any).open();
+      });
     },
     handleOk() {
       (this.$refs.ruleForm as any)

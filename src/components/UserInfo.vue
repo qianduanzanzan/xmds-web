@@ -1,5 +1,4 @@
 <template>
-{{stateId}}{{id}}
   <a-row style="width: 100%" justify="center">
     <img-manage
       v-model:imgUrl="userInfo.avatar"

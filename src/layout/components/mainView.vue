@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-view">
     <router-view v-slot="{ Component }">
       <keep-alive :include="cachedViews">
         <component :is="Component" />
@@ -22,3 +22,10 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.main-view{
+  height: calc(100vh - 105px);
+  overflow: auto;
+}
+</style>

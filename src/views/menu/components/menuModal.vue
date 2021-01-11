@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref,defineEmit } from "vue";
+import { defineComponent, ref } from "vue";
 import { addMenu, editMenu, getDeatil } from "@/api/menu";
 import { message } from "ant-design-vue";
 export default defineComponent({

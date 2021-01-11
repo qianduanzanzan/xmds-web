@@ -1,4 +1,4 @@
-import {getRouter} from "@/api/menu"
+import {getAuthMenu} from "@/api/menu"
 
 const state: any = {
     routers:[]
@@ -15,7 +15,7 @@ const state: any = {
   
   const actions = {
       getRoute:async function({commit}:any,data:any) {
-        const res = await getRouter(data)
+        const res = await getAuthMenu(data)
         commit("SET_ROUTERS",res.data || [])
       }
   };
