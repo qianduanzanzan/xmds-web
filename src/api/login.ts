@@ -10,22 +10,18 @@ export const login = (data: any) =>
     },
   });
 
-  export const logout = (data: any) =>
+  export const logout = () =>
   request({
     url: "/service/logout",
     method: "post",
-    data,
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
-  export const checkLogin = (data: any) =>
-  request({
-    url: "/service/checkLogin",
-    method: "post",
-    data,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  // export const checkLogin = (data: any) =>
+  // request({
+  //   url: "/service/checkLogin",
+  //   method: "post",
+  //   data,
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });

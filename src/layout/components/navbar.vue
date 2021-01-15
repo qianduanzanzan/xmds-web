@@ -56,7 +56,7 @@ export default defineComponent({
   },
   methods: {
     logout() {
-      logout({ token: this.userInfo.token }).then(() => {
+      logout().then(() => {
         removeToken();
         store.commit("user/REMOVE_USER_INFO");
         store.commit("permission/REMOVE_ROUTERS");

@@ -24,7 +24,7 @@ service.interceptors.request.use(
     const contentType = config.headers["Content-Type"];
     config.headers["Content-Type"] = contentType
       ? contentType
-      : "application/json";
+      : "application/x-www-form-urlencoded";
     //form提交
     if (config.headers["Content-Type"] == "application/x-www-form-urlencoded") {
       let ret = "";

@@ -30,6 +30,8 @@ import { setToken, setUserInfo, removeToken } from "@/utils/auth";
 import { onMounted, getCurrentInstance } from "vue";
 import { message } from "ant-design-vue";
 import store from "@/store/index";
+import md5 from "js-md5";
+import router from "@/router/index";
 
 export default defineComponent({
   name: "Login",
@@ -44,15 +46,49 @@ export default defineComponent({
   },
   methods: {
     login() {
-      login(this.loginForm)
-        .then((res: any) => {
+      login({
+        account: this.loginForm.account,
+        password: md5(this.loginForm.password),
+      })
+        .then(async (res: any) => {
           setToken(res.data.token);
           const data: any = res.data;
           setUserInfo(data);
           store.commit("user/SET_USER_INFO", data);
-          if(this.$route.query && (this.$route.query as any).redirect){
+          await store.dispatch("permission/getRoute", {
+            id: res.data.id,
+          });
+          const routers = (store.state as any).permission.routers.map(
+            (item: any) => {
+              return {
+                path: `/${item.routeName}`,
+                name: item.routeName,
+                component: () =>
+                  import(
+                    /* webpackChunkName: item.routeName */ `@/${item.filePath}`
+                  ),
+                meta: {
+                  nameZh: item.menuName,
+                },
+              };
+            }
+          );
+          const rootRouter: any = {
+            path: `/`,
+            name: "layout",
+            component: () =>
+              import(/* webpackChunkName: "about" */ "@/layout/index.vue"),
+            meta: {
+              nameZh: "主页",
+            },
+            children: [],
+          };
+          rootRouter.children = routers;
+          router.addRoute(rootRouter);
+          // next({ ...to, replace: true });
+          if (this.$route.query && (this.$route.query as any).redirect) {
             this.$router.push((this.$route.query as any).redirect);
-          }else{
+          } else {
             this.$router.push("/");
           }
         })

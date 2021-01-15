@@ -50,7 +50,7 @@ export const getDeatil = (data: any) =>
     },
   });
 
-  export const authMenu = (data: any) =>
+export const authMenu = (data: any) =>
   request({
     url: "/service/tbUserMenu/add",
     method: "post",
@@ -60,7 +60,7 @@ export const getDeatil = (data: any) =>
     },
   });
 
-  export const cancelAuth = (data: any) =>
+export const cancelAuth = (data: any) =>
   request({
     url: "/service/tbUserMenu/del",
     method: "post",
@@ -70,12 +70,9 @@ export const getDeatil = (data: any) =>
     },
   });
 
-  export const getAuthMenu = (data: any) =>
+export const getAuthMenu = (data: any) =>
   request({
-    url: "/service/tbUserMenu/getMenu",
+    url: "/service/menu/getMenuListByUserId",
     method: "post",
     data,
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
