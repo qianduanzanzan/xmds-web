@@ -2,9 +2,9 @@ const state: any = {
   token: "",
   userName: "",
   avatar: "",
-  role: null,
   auths: null,
   id: null,
+  isGet:false
 };
 
 const mutations = {
@@ -12,17 +12,17 @@ const mutations = {
     state.token = userInfo.token;
     state.userName = userInfo.userName;
     state.avatar = userInfo.avatar;
-    state.role = userInfo.role;
     state.auths = userInfo.auths;
     state.id = userInfo.id;
+    state.isGet = true
   },
 
   REMOVE_USER_INFO(state: any) {
     state.token = "";
     state.userName = "";
     state.avatar = "";
-    state.role = null;
     state.auths = null;
+    state.isGet = false
   },
 };
 

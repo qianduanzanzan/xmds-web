@@ -76,11 +76,10 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     const res = response.data;
-
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code == "52000" || res.code == "52001" || res.code == "52002") {
+      if (res.code == "52000" || res.code == "52001") {
         removeToken();
         // to re-login
         Modal.confirm({
@@ -94,11 +93,40 @@ service.interceptors.response.use(
             router.push("/login");
           },
         });
-      } else if (res.code != "50007") {
-        Message.error(res.msg);
+      } else if(res.code == "52002"){
+        removeToken();
+        // to re-login
+        Modal.confirm({
+          title: "提示",
+          content: "用户信息已修改，请重新登录",
+          type: "warning",
+          onOk() {
+            router.push("/login");
+          },
+          onCancel() {
+            router.push("/login");
+          },
+        });
+      }else if(res.code == "52003"){
+        removeToken();
+        // to re-login
+        Modal.confirm({
+          title: "提示",
+          content: "用户已停用，请与管理员联系",
+          type: "warning",
+          onOk() {
+            router.push("/login");
+          },
+          onCancel() {
+            router.push("/login");
+          },
+        });
+      }
+      if (res.code != "50007") {
+        Message.error(res.msg || res.result);
       }
       return new Promise((reject: any) => {
-        reject(new Error(res.message || "Error"));
+        reject(new Error(res.message?res.message : res.result  || "Error"));
       });
       // return Promise.reject(new Error(res.message || "Error"));
     } else {

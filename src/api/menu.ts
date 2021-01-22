@@ -1,18 +1,14 @@
 import request from "@/utils/request";
 
-export const getRouter = (data: any) =>
+export const getMenus = () =>
   request({
-    url: "/service/menu/getList",
+    url: "/service/menu/getMenus",
     method: "post",
-    data,
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 export const getMenuList = (data: any) =>
   request({
-    url: "/service/menu/getMenuList",
+    url: "/service/menu/getMenuPage",
     method: "post",
     data,
     headers: {
@@ -24,10 +20,7 @@ export const addMenu = (data: any) =>
   request({
     url: "/service/menu/add",
     method: "post",
-    data,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    data
   });
 
 export const editMenu = (data: any) =>
@@ -40,34 +33,32 @@ export const editMenu = (data: any) =>
     },
   });
 
+  export const changeStatus = (data: any) =>
+  request({
+    url: "/service/menu/changeMenuStatus",
+    method: "post",
+    data,
+  });
+
 export const getDeatil = (data: any) =>
   request({
     url: "/service/menu/getDetail",
     method: "post",
     data,
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 export const authMenu = (data: any) =>
   request({
-    url: "/service/tbUserMenu/add",
+    url: "/service/userMenu/add",
     method: "post",
     data,
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 export const cancelAuth = (data: any) =>
   request({
-    url: "/service/tbUserMenu/del",
+    url: "/service/userMenu/del",
     method: "post",
     data,
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 export const getAuthMenu = (data: any) =>

@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, toRefs } from "vue";
-import { getAuthMenu, authMenu, cancelAuth, getRouter } from "@/api/menu";
+import { getAuthMenu, authMenu, cancelAuth, getMenus } from "@/api/menu";
 export default defineComponent({
   name: "authMenuModal",
   props: {
@@ -22,10 +22,8 @@ export default defineComponent({
     const menuList = ref([]);
     const visible = ref(false);
     const getMenu = async () => {
-      const res1 = await getRouter({});
-      const res2 = await getAuthMenu(userId.value);
-      console.log(res1)
-      console.log(res2)
+      const res1 = await getMenus();
+      const res2 = await getAuthMenu({id:userId.value});
       menuList.value = res1.data.map((item1:any) => {
           return {
               ...item1,

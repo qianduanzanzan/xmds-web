@@ -19,3 +19,5 @@ app.use(Antd)
 app.mount("#app");
 require('./components/index')
 require('@/utils/webSql')
+
+store.dispatch('category/getCategory')

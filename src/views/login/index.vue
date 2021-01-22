@@ -55,42 +55,47 @@ export default defineComponent({
           const data: any = res.data;
           setUserInfo(data);
           store.commit("user/SET_USER_INFO", data);
-          await store.dispatch("permission/getRoute", {
-            id: res.data.id,
-          });
-          const routers = (store.state as any).permission.routers.map(
-            (item: any) => {
-              return {
-                path: `/${item.routeName}`,
-                name: item.routeName,
-                component: () =>
-                  import(
-                    /* webpackChunkName: item.routeName */ `@/${item.filePath}`
-                  ),
-                meta: {
-                  nameZh: item.menuName,
-                },
-              };
-            }
-          );
-          const rootRouter: any = {
-            path: `/`,
-            name: "layout",
-            component: () =>
-              import(/* webpackChunkName: "about" */ "@/layout/index.vue"),
-            meta: {
-              nameZh: "主页",
-            },
-            children: [],
-          };
-          rootRouter.children = routers;
-          router.addRoute(rootRouter);
-          // next({ ...to, replace: true });
           if (this.$route.query && (this.$route.query as any).redirect) {
             this.$router.push((this.$route.query as any).redirect);
           } else {
-            this.$router.push("/");
+            this.$router.push({path:"/"});
           }
+          // await store.dispatch("permission/getRoute", {
+          //   id: res.data.id,
+          // });
+          // const routers = (store.state as any).permission.routers.map(
+          //   (item: any) => {
+          //     return {
+          //       path: `/${item.routeName}`,
+          //       name: item.routeName,
+          //       component: () =>
+          //         import(
+          //           /* webpackChunkName: item.routeName */ `@/${item.filePath}`
+          //         ),
+          //       meta: {
+          //         nameZh: item.menuName,
+          //       },
+          //     };
+          //   }
+          // );
+          // const rootRouter: any = {
+          //   path: `/`,
+          //   name: "layout",
+          //   component: () =>
+          //     import(/* webpackChunkName: "about" */ "@/layout/index.vue"),
+          //   meta: {
+          //     nameZh: "主页",
+          //   },
+          //   children: [],
+          // };
+          // rootRouter.children = routers;
+          // router.addRoute(rootRouter);
+          // // next({ ...to, replace: true });
+          // if (this.$route.query && (this.$route.query as any).redirect) {
+          //   this.$router.push((this.$route.query as any).redirect);
+          // } else {
+          //   this.$router.push("/");
+          // }
         })
         .catch((error: any) => {
           console.log(error);

@@ -1,15 +1,18 @@
 import {getAuthMenu} from "@/api/menu"
 
 const state: any = {
-    routers:[]
+    routers:[],
+    isGet:false
   };
   
   const mutations = {
     SET_ROUTERS:(state:any,data:any) => {
         state.routers = data
+        state.isGet = true
     },
     REMOVE_ROUTERS:(state:any) => {
       state.routers = []
+      state.isGet = false
   }
   };
   

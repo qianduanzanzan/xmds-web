@@ -5,7 +5,7 @@
     :inlineCollapsed="collapsed"
     class="leftMenu"
   >
-    <div class="menu-header"><HomeOutlined />小明社区</div>
+    <div class="menu-header"><HomeOutlined />小明电商</div>
     <a-menu-item :class="actived && item.id == actived.id?'selected':''" class="aaa" v-for="item in menu" :key="item.id" @click="goto(item)">{{item.name}}</a-menu-item>
   </a-menu>
 </template>
@@ -64,7 +64,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .menu-header {
-  height: 56px;
+  height: 61px;
   width: 100%;
   line-height: 60px;
   color: #fff;

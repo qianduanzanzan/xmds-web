@@ -1,8 +1,11 @@
-import imgManage from './ImgManage.vue'
+import avatarManage from './AvatarManage.vue'
 import userInfo from './UserInfo.vue'
+import imagesManage from './ImagesManage.vue'
 import {app} from '../main'
-app.component('imgManage', imgManage)
+
+app.component('avatarManage', avatarManage)
 app.component('info', userInfo)
+app.component('imagesManage', imagesManage)
 
 
 // export default {

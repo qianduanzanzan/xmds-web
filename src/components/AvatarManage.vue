@@ -3,21 +3,21 @@
     <a-avatar :src="imgUrl" :size="200" />
     <a-row justify="center">
       <a-upload
-        v-model:fileList="fileList"
         list-type="text"
         class="avatar-uploader"
         :show-upload-list="false"
-        :action="`/service/${url}`"
+        :action="`/service/pic/upload`"
         :before-upload="beforeUpload"
         @change="handleChange"
         :headers="{ token: token }"
-        name="filename"
+        name="file"
         :token="token"
       >
         <a-button class="mt10">更换</a-button>
       </a-upload>
     </a-row>
   </div>
+  <!-- <a-avatar :src="aaa" :size="200" /> -->
 </template>
 
 <script lang="ts">
@@ -40,6 +40,7 @@ export default defineComponent({
     return {
       loading: false,
       fileList: [],
+      aaa: "",
     };
   },
   computed: {
@@ -54,7 +55,6 @@ export default defineComponent({
         return;
       }
       if (info.file.status === "done") {
-        console.log(info.file.response.data);
         this.$emit("update:imgUrl", info.file.response.data);
       }
       if (info.file.status === "error") {
@@ -67,26 +67,25 @@ export default defineComponent({
       if (!isJpgOrPng) {
         message.error("只能上传图片文件");
       }
-      const isLt2M = file.size / 1024 / 1024 < 5;
-      if (!isLt2M) {
+      const isLt5M = file.size / 1024 / 1024 < 5;
+      if (!isLt5M) {
         message.error("图片最大为5MB");
       }
-      return isJpgOrPng && isLt2M;
+      return isJpgOrPng && isLt5M;
+      // if (isJpgOrPng && isLt5M) {
+      //   const reader = new FileReader();
+      //   reader.onload = (e) => {
+      //     this.aaa = (e as any).target.result;
+      //   };
+      //   reader.readAsDataURL(file);
+      // }
+      // return false;
     },
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.upload-mask {
-  position: relative;
-  height: 200px;
-  background: red;
-  width: 200px;
-  bottom: 0px;
-  border-bottom-right-radius: 100px;
-  border-bottom-left-radius: 100px;
-}
 .inline-block {
   display: inline-block;
 }

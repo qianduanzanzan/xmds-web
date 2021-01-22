@@ -5,10 +5,10 @@
         <a-row justify="start" align="middle">
           <a-col :span="12">
             <a-row align="middle"
-              >菜单名称：
+              >分类名称：
               <a-col :span="18">
                 <a-input
-                  v-model:value="searchData.menuName"
+                  v-model:value="searchData.categoryName"
                   @keydown.enter="getList"
                 ></a-input>
               </a-col>
@@ -16,7 +16,7 @@
           </a-col>
           <a-col :span="11" style="margin-left: 8px">
             <a-row align="middle"
-              >菜单状态：
+              >分类状态：
               <a-col>
                 <a-radio-group
                   name="status"
@@ -38,11 +38,11 @@
           </a-col>
         </a-row>
       </a-col>
-      <a-button @click="addMenu">添加</a-button>
+      <a-button @click="addCate">添加</a-button>
     </a-row>
     <a-table
       class="table"
-      :data-source="menuList"
+      :data-source="cateList"
       rowKey="id"
       :pagination="false"
     >
@@ -53,25 +53,16 @@
           </span>
         </template>
       </a-table-column>
-      <a-table-column title="菜单名称">
+      <a-table-column title="分类名称">
         <template #default="{ record }">
           <span>
-            {{ record.menuName }}
+            {{ record.categoryName }}
           </span>
         </template>
       </a-table-column>
-      <a-table-column title="路由地址">
+      <a-table-column title="分类图片">
         <template #default="{ record }">
-          <span>
-            {{ record.routeName }}
-          </span>
-        </template>
-      </a-table-column>
-      <a-table-column title="文件地址">
-        <template #default="{ record }">
-          <span>
-            {{ record.filePath }}
-          </span>
+          <a-avatar :src="record.img" :size="80" />
         </template>
       </a-table-column>
       <a-table-column title="状态">
@@ -100,8 +91,8 @@
       </a-table-column>
       <a-table-column title="操作">
         <template #default="{ record }">
-          <a-button @click="editMenu(record)">修改</a-button>
-          <a-button @click="changeMenuStatus(record)">{{
+          <a-button @click="editCate(record)">修改</a-button>
+          <a-button @click="changeStatus(record)">{{
             record.stopFlag == 1 ? "启用" : "停用"
           }}</a-button>
         </template>
@@ -123,81 +114,70 @@
         </template>
       </a-pagination>
     </a-row>
-    <menu-modal
-      ref="menuModal"
-      :menuId="selectedMenuID"
-      @close="getList"
-      :type="type"
-    />
+    <a-modal title="添加分类" v-model:visible="visible" @ok="handleOk">
+      <a-row justify="center">
+        <avatar-manage v-model:imgUrl="cateForm.img" />
+      </a-row>
+      <a-form
+        name="custom-validation"
+        ref="ruleForm"
+        :model="cateForm"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        labelAlign="left"
+      >
+        <a-form-item ref="category" label="分类名称" name="category">
+          <a-input
+            v-model:value="cateForm.category"
+            placeholder="请输入分类名称"
+          ></a-input>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from "vue";
-import { getMenuList, changeStatus } from "@/api/menu";
-import menuModal from "./components/menuModal.vue";
+import { defineComponent, ref, toRefs, nextTick } from "vue";
+import {
+  getCatePage,
+  addCategory,
+  editCategory,
+  changeCateStatus,
+} from "@/api/category";
 import { Modal, message } from "ant-design-vue";
 export default defineComponent({
-  components: {
-    menuModal,
-  },
-  name: "menuList",
+  name: "prodCategory",
   setup() {
-    const menuList = ref([]);
-    const searchData = ref({ menuName: "", stopFlag: null });
+    const searchData = ref({ category: "", stopFlag: null });
+    const cateList = ref([]);
     const pageInfo = ref({
-      total: 0,
-      size: 20,
       current: 1,
+      size: 20,
+      total: 0,
+    });
+    const visible = ref(false);
+    const cateForm = ref({ category: "", img: "" });
+    const labelCol = ref({ span: 6 });
+    const wrapperCol = ref({ span: 18 });
+    const rules = ref({
+      category: {
+        required: true,
+        message: "请输入分类名称",
+        trigger: "blur",
+      },
     });
     const pageSize = ref(["10", "20", "30", "40", "50"]);
-    const menuModal = ref(null);
-    const selectedMenuID = ref(null);
-    const type = ref("add");
+    const selectedId = ref(null);
+
     const getList = () => {
-      getMenuList(
-        Object.assign({ menuName: searchData.value.menuName,stopFlag:searchData.value.stopFlag }, pageInfo.value)
-      ).then((res: any) => {
-        pageInfo.value.total = res.data.total;
-        menuList.value = res.data.records;
-      });
-    };
-    const opneModal = () => {
-      nextTick(() => {
-        (menuModal.value as any).open();
-      });
-    };
-    getList();
-    const addMenu = () => {
-      type.value = "add";
-      opneModal();
-    };
-    const editMenu = (data: any) => {
-      selectedMenuID.value = data.id;
-      type.value = "edit";
-      opneModal();
-    };
-    const changeMenuStatus = (data: any) => {
-      Modal.confirm({
-        title: `确认`,
-        content: `确定${data.stopFlag == 1 ? "启用" : "停用"}吗`,
-        onOk() {
-          changeStatus({ id: data.id }).then((res: any) => {
-            if (res.code == 200) {
-              message.success("修改成功");
-              pageInfo.value = {
-                total: 0,
-                size: 20,
-                current: 1,
-              };
-              getList();
-            }
-          });
-        },
-        onCancel() {
-          console.log("取消");
-        },
-      });
+      getCatePage(Object.assign(searchData.value, pageInfo.value)).then(
+        (res) => {
+          pageInfo.value.total = res.data.total;
+          cateList.value = res.data.records;
+        }
+      );
     };
     const onChange = (page: number, pageSize: number) => {
       pageInfo.value = {
@@ -215,28 +195,79 @@ export default defineComponent({
       };
       getList();
     };
+    const addCate = () => {
+      cateForm.value.category = "";
+      cateForm.value.img = "";
+      selectedId.value = null;
+      visible.value = true;
+    };
+    const handleOk = () => {
+      if (!selectedId.value) {
+        addCategory(cateForm.value).then((res: any) => {
+          if (res.code == 200) {
+            message.success("添加成功");
+            pageInfo.value = {
+              current: 1,
+              size: 20,
+              total: 0,
+            };
+            visible.value = false;
+            getList();
+          }
+        });
+      } else {
+        editCategory({
+          id: selectedId.value,
+          categoryName: cateForm.value.category,
+          img: cateForm.value.img,
+        }).then((res: any) => {
+          if (res.code == 200) {
+            message.success("修改成功");
+            pageInfo.value = {
+              current: 1,
+              size: 20,
+              total: 0,
+            };
+            visible.value = false;
+            getList();
+          }
+        });
+      }
+    };
+    const editCate = (data: any) => {
+      cateForm.value.category = data.categoryName;
+      cateForm.value.img = data.img;
+      selectedId.value = data.id;
+      visible.value = true;
+    };
+    const changeStatus = (data: any) => {
+      changeCateStatus({ id: data.id }).then((res: any) => {
+        if (res.code == 200) {
+          message.success("状态修改成功");
+          getList();
+        }
+      });
+    };
+    getList();
     return {
       pageSize,
-      menuList,
+      changeStatus,
       searchData,
+      cateList,
       pageInfo,
+      visible,
+      cateForm,
+      rules,
       getList,
-      opneModal,
-      editMenu,
-      addMenu,
-      menuModal,
-      type,
-      selectedMenuID,
-      changeMenuStatus,
-      onSizeChange,
       onChange,
+      onSizeChange,
+      handleOk,
+      addCate,
+      labelCol,
+      wrapperCol,
+      selectedId,
+      editCate,
     };
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.pagination {
-  display: inline-block;
-}
-</style>

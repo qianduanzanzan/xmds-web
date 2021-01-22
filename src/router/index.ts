@@ -8,20 +8,20 @@ const routes: Array<RouteRecordRaw> = [
       meta: { hidden: true }
     },
     // component:() => import(/* webpackChunkName: "login" */"../views/Login/index.vue")
-  {
-    path: "/",
-    name: "layout",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "@/layout/index.vue"),
-    children:[
-      {
-        path: "/a",
-        name: "test",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "@/views/Test/test1.vue")
-      }
-    ]
-  },
+  // {
+  //   path: "/",
+  //   name: "layout",
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "@/layout/index.vue"),
+  //   children:[
+  //     {
+  //       path: "/a",
+  //       name: "test",
+  //       component: () =>
+  //         import(/* webpackChunkName: "about" */ "@/views/Test/test1.vue")
+  //     }
+  //   ]
+  // },
 ];
 
 const router = createRouter({

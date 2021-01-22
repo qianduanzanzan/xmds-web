@@ -77,7 +77,7 @@ export default defineComponent({
     const ruleForm = ref();
     const open = () => {
       if (props.type == "edit") {
-        getDeatil(props.menuId).then((res: any) => {
+        getDeatil({id:props.menuId}).then((res: any) => {
           menuForm.value = res.data;
         });
       }
@@ -89,9 +89,11 @@ export default defineComponent({
         .then(() => {
           if (props.type == "edit") {
             editMenu(menuForm.value).then((res: any) => {
-              message.success("修改成功");
-              visible.value = false;
-              context.emit('close')
+              if(res.code == 200){
+                message.success("修改成功");
+                visible.value = false;
+                context.emit('close')
+              }
             });
           } else {
             addMenu(menuForm.value).then((res: any) => {
