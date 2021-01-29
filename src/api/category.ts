@@ -33,6 +33,6 @@ export const changeCateStatus = (data: any) =>
 
 export const getAllCate = () =>
   request({
-    url: "/service/prodCategory/geAlltCategory",
+    url: "/service/prodCategory/getAllCategory",
     method: "post",
   });
